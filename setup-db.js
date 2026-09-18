@@ -84,7 +84,7 @@ async function setup() {
         "resolvedAt" TIMESTAMP WITH TIME ZONE,
         category TEXT,
         "proofHash" TEXT,
-        "ruleTriggered" TEXT
+        "ruleTriggered" TEXT 
       );
     `;
     console.log('Table approvals ready.');

@@ -1,51 +1,69 @@
 /**
- * @file tests/infrastructure.test.ts
- * Tests for Production Infrastructure, Midnight Network Endpoints,
- * Indexer Resilience, and State Caching.
+ * Infrastructure and resilience integration tests.
+ * Covers network configuration, cache behavior, and health reporting.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from "vitest";
 import {
   PRODUCTION_NETWORKS,
-  stateCache,
   checkMidnightInfrastructureHealth,
-} from '../lib/midnight/resilience.js';
+  stateCache,
+} from "../lib/midnight/resilience.js";
 
-describe('Production Infrastructure & Resilience Layer', () => {
-  describe('Network Configurations', () => {
-    it('defines distinct endpoints for Preview, Preprod, and Mainnet', () => {
-      expect(PRODUCTION_NETWORKS.preview.indexerUri).toContain('preview');
-      expect(PRODUCTION_NETWORKS.preprod.indexerUri).toContain('preprod');
-      expect(PRODUCTION_NETWORKS.mainnet.indexerUri).toBeDefined();
+describe("Midnight infrastructure resilience", () => {
+  describe("Network endpoints", () => {
+    it("provides separate configurations for supported networks", () => {
+      const { preview, preprod, mainnet } = PRODUCTION_NETWORKS;
 
-      expect(PRODUCTION_NETWORKS.preview.explorerUri).toBe('https://preview.midnightexplorer.com');
-      expect(PRODUCTION_NETWORKS.preprod.explorerUri).toBe('https://preprod.midnightexplorer.com');
-      expect(PRODUCTION_NETWORKS.mainnet.explorerUri).toBe('https://midnightexplorer.com');
+      expect(preview.indexerUri).toMatch(/preview/);
+      expect(preprod.indexerUri).toMatch(/preprod/);
+      expect(mainnet.indexerUri).toBeTruthy();
+
+      expect(preview.explorerUri).toBe(
+        "https://preview.midnightexplorer.com",
+      );
+      expect(preprod.explorerUri).toBe(
+        "https://preprod.midnightexplorer.com",
+      );
+      expect(mainnet.explorerUri).toBe(
+        "https://midnightexplorer.com",
+      );
     });
   });
 
-  describe('Sub-second State Caching', () => {
-    it('caches and retrieves items within TTL', () => {
-      stateCache.set('test_key', { blockHeight: 185420 }, 1000);
-      const cached = stateCache.get<{ blockHeight: number }>('test_key');
-      expect(cached).toEqual({ blockHeight: 185420 });
+  describe("State cache", () => {
+    it("retrieves a value before its TTL expires", () => {
+      const key = "cache_test";
+      const value = { blockHeight: 185420 };
+
+      stateCache.set(key, value, 1000);
+
+      expect(stateCache.get<typeof value>(key)).toEqual(value);
     });
 
-    it('returns null for non-existent or expired keys', async () => {
-      stateCache.set('expired_key', { data: 'old' }, 10);
-      await new Promise((r) => setTimeout(r, 20));
-      expect(stateCache.get('expired_key')).toBeNull();
+    it("discards values after their TTL", async () => {
+      const key = "ttl_test";
+
+      stateCache.set(key, { data: "expired" }, 10);
+
+      await new Promise((resolve) => setTimeout(resolve, 20));
+
+      expect(stateCache.get(key)).toBeNull();
     });
   });
 
-  describe('Infrastructure Health Checks', () => {
-    it('checks health status and returns latency metrics', async () => {
-      const health = await checkMidnightInfrastructureHealth('preprod');
-      expect(health.network).toBe('preprod');
-      expect(health.indexerHealthy).toBe(true);
-      expect(health.proverHealthy).toBe(true);
-      expect(health.proverLatencyMs).toBeLessThanOrEqual(50);
-      expect(health.lastBlockHeight).toBeGreaterThan(180000);
+  describe("Infrastructure health", () => {
+    it("reports healthy preprod services with current metrics", async () => {
+      const result = await checkMidnightInfrastructureHealth("preprod");
+
+      expect(result).toMatchObject({
+        network: "preprod",
+        indexerHealthy: true,
+        proverHealthy: true,
+      });
+
+      expect(result.proverLatencyMs).toBeLessThanOrEqual(50);
+      expect(result.lastBlockHeight).toBeGreaterThan(180000);
     });
   });
 });

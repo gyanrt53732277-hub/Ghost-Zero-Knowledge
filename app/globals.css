@@ -2,17 +2,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 @theme {
-  /* ── Typography ── */
+  /* Typography */
   --font-sans: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "Space Mono", "IBM Plex Mono", ui-monospace, monospace;
 
-  /* ── Ghost Color System ── */
-  /* Backgrounds */
-  --color-ghost-void:      #020202;
-  --color-ghost-bg:        #050505;
-  --color-ghost-surface:   #0a0a0a;
-  --color-ghost-elevated:  #0f0f0f;
-  --color-ghost-card:      #111111;
+  /* Ghost Color System */
+  --color-ghost-void: #020202;
+  --color-ghost-bg: #050505;
+  --color-ghost-surface: #0a0a0a;
+  --color-ghost-elevated: #0f0f0f;
+  --color-ghost-card: #111111;
+
+  /* Additional UI surfaces */
+  --color-ghost-panel: #141414;
+  --color-ghost-overlay: #181818;
+  --color-ghost-muted: #202020;
+}
 
   /* Borders */
   --color-ghost-border:       rgba(255,255,255,0.06);

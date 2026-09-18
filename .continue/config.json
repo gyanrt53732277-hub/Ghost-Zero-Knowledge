@@ -5,7 +5,7 @@
       "provider": "openai",
       "model": "nvidia/nemotron-3-ultra-550b-a55b",
       "apiBase": "https://integrate.api.nvidia.com/v1",
-      "apiKey": "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",
+      "apiKey": "${NVIDIA_API_KEY}",
       "contextLength": 131072,
       "completionOptions": {
         "temperature": 0.7,
@@ -19,7 +19,7 @@
     "provider": "openai",
     "model": "nvidia/nemotron-3-ultra-550b-a55b",
     "apiBase": "https://integrate.api.nvidia.com/v1",
-    "apiKey": "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"
+    "apiKey": "${NVIDIA_API_KEY}"
   },
   "allowAnonymousTelemetry": false,
   "useVsCodeExecuteTerminalCommand": true

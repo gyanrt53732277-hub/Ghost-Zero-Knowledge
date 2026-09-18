@@ -1,6 +1,10 @@
 node_modules/
 dist/
-.DS_Store
 .next/
 .vite/
+
+# TypeScript build cache
 tsconfig.tsbuildinfo
+
+# macOS system files
+.DS_Store

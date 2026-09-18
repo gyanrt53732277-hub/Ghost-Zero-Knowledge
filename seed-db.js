@@ -23,7 +23,7 @@ const SEED_POLICIES = [
     createdAt: "2025-01-15T09:00:00Z",
     updatedAt: "2025-06-10T14:22:00Z",
     spentToday: 340,
-    spentThisMonth: 2180,
+    spentThisMonth: 2180, 
   },
   {
     id: "pol_02",

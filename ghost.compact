@@ -11,6 +11,12 @@ constructor(limit: Uint<32>) {
 }
 
 export circuit spend(amount: Uint<32>): [] {
-  assert(total_spent + amount <= spending_limit, "Spending limit exceeded");
-  total_spent = (total_spent + disclose(amount)) as Uint<32>;
+  const updated_total = total_spent + amount;
+
+  assert(
+    updated_total <= spending_limit,
+    "Spending limit exceeded"
+  );
+
+  total_spent = disclose(updated_total) as Uint<32>;
 }

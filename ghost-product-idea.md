@@ -300,11 +300,14 @@ Ghost vs current approaches:
 
 ## 9. Long-Term Vision
 
-Beyond the initial shopping guardrail, Ghost can expand to:
+Ghost is designed to evolve beyond basic spending protection into a broader accountability layer for autonomous AI systems.
 
-- Complex budgeting and multi-category policies.
-- B2B negotiation agents with proof-backed budgets.
-- Portfolio/trading agents with provable risk constraints.
-- Compliance-grade enterprise agents (lending, insurance) with auditable ZK proofs.
+Future directions include:
 
-But the core remains the same: **cryptographic accountability for autonomous agents**, starting with the clearest, most user-visible pain point—spending control in AI commerce.
+* Advanced budgeting with category-specific and customizable spending rules.
+* B2B purchasing and negotiation agents operating within verifiable financial limits.
+* Trading and portfolio-management agents constrained by provable risk policies.
+* Enterprise AI applications in areas such as lending and insurance, supported by auditable zero-knowledge proofs.
+
+The long-term objective is to make autonomous agents **verifiably accountable for the actions they take**. Ghost begins with a simple and highly visible use case—controlling AI-driven commerce spending—and provides a foundation that can extend to increasingly complex financial decisions.
+

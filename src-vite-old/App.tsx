@@ -1,11 +1,11 @@
 import React from 'react';
-import { GhostDashboard } from './components/GhostDashboard';
 import './styles/index.css';
+import { GhostDashboard } from './components/GhostDashboard';
 
-function App() {
-  return (
-    <GhostDashboard />
-  );
-}
+const App = () => {
+  const dashboard = <GhostDashboard />;
+
+  return dashboard;
+};
 
 export default App;

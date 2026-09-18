@@ -20,7 +20,7 @@ const nextConfig = {
     config.resolve.alias['isomorphic-ws'] = path.resolve(__dirname, 'dummy-ws.js');
     
     return config;
-  },
+  }, 
 };
 
 export default nextConfig;

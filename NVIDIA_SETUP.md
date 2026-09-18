@@ -149,30 +149,39 @@ python nvidia-config.py
 - Check key hasn't expired at https://build.nvidia.com
 
 ### Issue: "Model not found"
-- Confirm model name: `nvidia/nemotron-3-ultra-550b-a55b`
-- Check NVIDIA API status
+
+* Verify that the configured model identifier is correct.
+* Check whether the model is currently available through the NVIDIA API.
+* Confirm that your NVIDIA API key has access to the requested model.
 
 ### Issue: "Connection timeout"
-- Ensure internet connection
-- Check firewall settings
-- Verify NVIDIA API is accessible
+
+* Check your internet connection.
+* Review firewall or network restrictions.
+* Confirm that the NVIDIA API endpoint is reachable.
 
 ---
 
 ## 📚 Additional Resources
 
-- NVIDIA API Docs: https://build.nvidia.com/explore/discover
-- OpenAI SDK Docs: https://platform.openai.com/docs/api-reference
-- VS Code Settings: https://code.visualstudio.com/docs/getstarted/settings
+* NVIDIA API Documentation: https://build.nvidia.com/explore/discover
+* OpenAI SDK Documentation: https://platform.openai.com/docs/api-reference
+* VS Code Settings Documentation: https://code.visualstudio.com/docs/getstarted/settings
 
 ---
 
 ## ✅ Next Steps
 
-1. Test the configuration:
+1. Verify your `NVIDIA_API_KEY` environment variable.
+
+2. Run the configuration test:
+
    ```bash
    python nvidia-config.py
    ```
+
+3. Review the terminal output for any API or authentication errors.
+
 
 2. Configure your preferred VS Code extension (Continue.dev recommended)
 

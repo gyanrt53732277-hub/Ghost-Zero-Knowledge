@@ -1,64 +1,99 @@
 // ==========================================
 // GHOST ADVANCED COMPACT CIRCUIT
 // ==========================================
-// Enterprise-Grade ZK Policy Engine
-// Features:
-// 1. Dynamic Encrypted Threshold Re-balancing
-// 2. Multi-Party ZK Approvals for > $50,000 txs
-// 3. Absolute Privacy of Transaction Amounts
+// Enterprise ZK Policy & Spending Engine
+//
+// Core capabilities:
+// 1. Threshold commitment management
+// 2. Enterprise authorization verification
+// 3. Additional authorization for high-value spends
+// 4. Controlled spending-limit enforcement
 // ==========================================
+
 pragma language_version >= 0.14.0;
 
 import CompactStandardLibrary;
 
+// ------------------------------------------
+// Public ledger state
+// ------------------------------------------
+
 export ledger spending_limit: Uint<32>;
 export ledger total_spent: Uint<32>;
 
-// ZK Multi-Party Approval Root (Commitment to authorized enterprise signers)
+// Commitment representing the enterprise authorization root.
 export ledger enterprise_auth_root: Bytes<32>;
 
-// Dynamic Encrypted Threshold Commitment
+// Commitment representing the currently configured threshold.
 export ledger threshold_commitment: Bytes<32>;
 
+// ------------------------------------------
+// Contract initialization
+// ------------------------------------------
+
 constructor(
-  limit: Uint<32>, 
+  limit: Uint<32>,
   auth_root: Bytes<32>,
   initial_threshold_commit: Bytes<32>
 ) {
   spending_limit = disclose(limit);
   total_spent = 0 as Uint<32>;
+
   enterprise_auth_root = auth_root;
   threshold_commitment = initial_threshold_commit;
 }
 
-// 1) Dynamic Encrypted Threshold Re-balancing
-// Allows enterprise admins to dynamically update the internal ZK risk thresholds
-// without exposing the thresholds or the admin's secret token to the public ledger.
+// ------------------------------------------
+// Threshold management
+// ------------------------------------------
+
+// Updates the enterprise threshold commitment after
+// validating the administrator authorization.
 export circuit rebalance_threshold(
   admin_secret: Bytes<32>,
   new_threshold_commit: Bytes<32>
 ): [] {
-  // In ZK, we assert knowledge of the admin secret that maps to the auth root
-  assert(admin_secret == enterprise_auth_root, "Unauthorized: Invalid admin secret");
+  assert(
+    admin_secret == enterprise_auth_root,
+    "Unauthorized: Invalid admin secret"
+  );
+
   threshold_commitment = new_threshold_commit;
 }
 
-// 2) Multi-Party ZK Approvals for Enterprise Transactions > $50,000
+// ------------------------------------------
+// Spending authorization
+// ------------------------------------------
+
+// Records an authorized transaction while enforcing
+// the configured spending ceiling.
+//
+// Transactions at or above 50,000 require an additional
+// enterprise authorization token.
 export circuit spend(
   amount: Uint<32>,
   multi_party_token: Bytes<32>
 ): [] {
-  // Enforce global ZK spending limit
-  assert(total_spent + amount <= spending_limit, "Absolute spending limit exceeded");
+  const proposed_total = total_spent + amount;
 
-  // Conditional ZK Multi-Party Approval 
+  // Prevent the cumulative spending balance from
+  // exceeding the configured contract limit.
+  assert(
+    proposed_total <= spending_limit,
+    "Absolute spending limit exceeded"
+  );
+
+  // Require enterprise authorization for high-value
+  // transactions.
   if (amount >= 50000 as Uint<32>) {
-    // If the transaction exceeds $50,000, the circuit mathematically requires
-    // a valid Multi-Party ZK Authorization token to proceed.
-    // This token remains entirely private and is never broadcasted on-chain.
-    assert(multi_party_token == enterprise_auth_root, "High-value spend requires valid multi-party ZK approval");
+    assert(
+      multi_party_token == enterprise_auth_root,
+      "High-value spend requires valid multi-party ZK approval"
+    );
   }
 
-  // Safely disclose only the verified amount to update the public tracker
-  total_spent = (total_spent + disclose(amount)) as Uint<32>;
+  // Commit the newly calculated spending total.
+  total_spent = (
+    total_spent + disclose(amount)
+  ) as Uint<32>;
 }

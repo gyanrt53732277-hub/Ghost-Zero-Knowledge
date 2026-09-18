@@ -22,7 +22,7 @@ async function generateWallet() {
       proofServer: 'http://127.0.0.1:6300', // Mock proof server url
     };
     
-    // We use builder to generate the keys
+    // We use builder to generate the keys 
     const builder = FluentWalletBuilder.forEnvironment(env as any);
     const buildResult = await builder.withRandomSeed().buildWithoutStarting();
     

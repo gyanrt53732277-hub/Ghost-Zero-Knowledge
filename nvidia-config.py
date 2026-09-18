@@ -22,7 +22,7 @@ def get_nvidia_completion(
     top_p=0.95,
     max_tokens=16384,
     enable_thinking=True,
-    reasoning_budget=16384,
+    reasoning_budget=16384, 
     stream=True
 ):
     """

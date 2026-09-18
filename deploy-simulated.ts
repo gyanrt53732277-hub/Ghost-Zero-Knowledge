@@ -1,24 +1,33 @@
-import { GhostSimulator } from "./src/test/ghost-simulator.js";
-import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import { randomBytes } from "crypto";
+import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
+import { GhostSimulator } from "./src/test/ghost-simulator.js";
+
+const INITIAL_SPENDING_LIMIT = 500n;
+const NETWORK = "undeployed";
 
 async function runSimulation() {
-  console.log("Connecting to network (Simulated)...");
-  setNetworkId("undeployed");
-  
-  console.log("Deploying Ghost contract with initial spending limit of 500...");
-  const simulator = new GhostSimulator(500n);
-  
-  // Generating a fake address just for the local simulated run
-  const mockAddress = randomBytes(32).toString('hex');
-  
+  console.log("Starting Ghost local simulation...");
+  setNetworkId(NETWORK);
+
+  console.log(
+    `Deploying Ghost contract with spending limit: ${INITIAL_SPENDING_LIMIT}...`
+  );
+
+  const simulator = new GhostSimulator(INITIAL_SPENDING_LIMIT);
+  const mockAddress = randomBytes(32).toString("hex");
+
   console.log("\n=============================================");
-  console.log("Ghost Contract Deployed Successfully!");
+  console.log("Ghost Contract Deployment Complete");
+  console.log("=============================================");
   console.log(`Contract Address: ${mockAddress}`);
-  console.log("=============================================\n");
-  
-  console.log("Initial Public Ledger State:");
+  console.log(`Network: ${NETWORK}`);
+  console.log(`Spending Limit: ${INITIAL_SPENDING_LIMIT}`);
+
+  console.log("\nInitial Ledger State:");
   console.log(simulator.getLedger());
 }
 
-runSimulation().catch(console.error);
+runSimulation().catch((error) => {
+  console.error("Simulation failed:", error);
+  process.exitCode = 1;
+});

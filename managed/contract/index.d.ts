@@ -1,7 +1,10 @@
 import type * as __compactRuntime from '@midnight-ntwrk/compact-runtime';
 
 export type Witnesses<PS> = {
-}
+  // Witness definitions can be added here as the contract evolves.
+};
+
+export type ContractRuntime<PS> = typeof __compactRuntime;
 
 export type ImpureCircuits<PS> = {
   spend(context: __compactRuntime.CircuitContext<PS>, amount_0: bigint): __compactRuntime.CircuitResults<PS, []>;

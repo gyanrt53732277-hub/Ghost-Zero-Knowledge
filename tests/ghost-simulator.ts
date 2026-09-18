@@ -1,30 +1,37 @@
 import {
-  type CircuitContext,
-  QueryContext,
-  sampleContractAddress,
-  createConstructorContext,
   CostModel,
+  QueryContext,
+  createConstructorContext,
+  sampleContractAddress,
+  type CircuitContext,
 } from "@midnight-ntwrk/compact-runtime";
 import {
   Contract,
-  type Ledger,
   ledger,
+  type Ledger,
 } from "../managed/ghost/contract/index";
 
 export class GhostSimulator {
   readonly contract: Contract<void>;
-  circuitContext: CircuitContext<void>;
+  private circuitContext: CircuitContext<void>;
 
-  constructor(limit: bigint) {
+  constructor(spendingLimit: bigint) {
     this.contract = new Contract<void>({});
+
+    const initialContext = createConstructorContext(
+      {},
+      "0".repeat(64),
+    );
+
     const {
       currentPrivateState,
       currentContractState,
       currentZswapLocalState,
     } = this.contract.initialState(
-      createConstructorContext({}, "0".repeat(64)),
-      limit,
+      initialContext,
+      spendingLimit,
     );
+
     this.circuitContext = {
       currentPrivateState,
       currentZswapLocalState,
@@ -37,14 +44,18 @@ export class GhostSimulator {
   }
 
   public getLedger(): Ledger {
-    return ledger(this.circuitContext.currentQueryContext.state);
+    const state = this.circuitContext.currentQueryContext.state;
+    return ledger(state);
   }
 
   public spend(amount: bigint): Ledger {
-    this.circuitContext = this.contract.impureCircuits.spend(
+    const result = this.contract.impureCircuits.spend(
       this.circuitContext,
       amount,
-    ).context;
-    return ledger(this.circuitContext.currentQueryContext.state);
+    );
+
+    this.circuitContext = result.context;
+
+    return this.getLedger();
   }
 }

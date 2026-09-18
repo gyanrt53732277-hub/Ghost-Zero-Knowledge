@@ -8,23 +8,50 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 async function clearData() {
   console.log('Clearing mock data from Supabase...');
   
-  // Clear audit events
-  const { error: err1 } = await supabase.from('audit_events').delete().neq('id', 'mock');
-  console.log('Cleared audit events', err1 || 'success');
-  
-  // Clear approvals
-  const { error: err2 } = await supabase.from('approvals').delete().neq('id', 'mock');
-  console.log('Cleared approvals', err2 || 'success');
-  
-  // Clear agents
-  const { error: err3 } = await supabase.from('agents').delete().neq('id', 'mock');
-  console.log('Cleared agents', err3 || 'success');
-  
-  // Clear policies
-  const { error: err4 } = await supabase.from('policies').delete().neq('id', 'mock');
-  console.log('Cleared policies', err4 || 'success');
+  // Remove existing audit records
+  const { error: auditError } = await supabase
+    .from("audit_events")
+    .delete()
+    .neq("id", "mock");
 
-  console.log('Done clearing all mock data!');
+  console.log(
+    "Audit events:",
+    auditError ? auditError.message : "cleared successfully"
+  );
+
+  // Remove approval records
+  const { error: approvalError } = await supabase
+    .from("approvals")
+    .delete()
+    .neq("id", "mock");
+
+  console.log(
+    "Approvals:",
+    approvalError ? approvalError.message : "cleared successfully"
+  );
+
+  // Remove registered agents
+  const { error: agentError } = await supabase
+    .from("agents")
+    .delete()
+    .neq("id", "mock");
+
+  console.log(
+    "Agents:",
+    agentError ? agentError.message : "cleared successfully"
+  );
+
+  // Remove configured policies
+  const { error: policyError } = await supabase
+    .from("policies")
+    .delete()
+    .neq("id", "mock");
+
+  console.log(
+    "Policies:",
+    policyError ? policyError.message : "cleared successfully"
+  );
+
+  console.log("Mock data cleanup completed.");
 }
-
 clearData();

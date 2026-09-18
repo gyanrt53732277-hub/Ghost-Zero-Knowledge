@@ -4,54 +4,50 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
     "app/**/*.ts",
-    "app/**/*.tsx",
-    ".next/dev/types/**/*.ts"
+    "app/**/*.tsx"
   ],
   "compilerOptions": {
-    "declaration": true,
-    "lib": [
-      "ESNext"
-    ],
     "target": "ES2022",
+    "lib": ["ESNext"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
+    "jsx": "react-jsx",
+
     "strict": true,
-    "allowImportingTsExtensions": true,
+    "noImplicitAny": true,
+    "allowJs": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "sourceMap": true,
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "declaration": true,
+    "sourceMap": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "incremental": true,
+    "skipLibCheck": true,
+
     "plugins": [
       {
         "name": "next"
       }
     ],
+
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@ghost/sdk": [
-        "./packages/sdk/src/index.ts"
-      ],
-      "@ghost/sdk/*": [
-        "./packages/sdk/src/*"
-      ]
-    },
-    "incremental": true
+      "@/*": ["./*"],
+      "@ghost/sdk": ["./packages/sdk/src/index.ts"],
+      "@ghost/sdk/*": ["./packages/sdk/src/*"]
+    }
   },
   "exclude": [
     "node_modules",
-    "src-vite-old",
     "tests",
     "bboard",
     "ghost-contract",
+    "src-vite-old",
     "deploy-simulated.ts"
   ]
 }

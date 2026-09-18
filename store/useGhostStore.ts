@@ -57,22 +57,27 @@ export interface Fleet {
 export interface Agent {
   id: string;
   name: string;
-  type: "shopping" | "procurement" | "research" | "financial";
   status: AgentStatus;
   risk: RiskLevel;
+
+  type: "shopping" | "procurement" | "research" | "financial";
+
   policyId: string | null;
   permissions: string[];
+
+  description: string;
+  version: string;
+
   lastActivity: string;
+  connectedAt: string;
+
   totalTransactions: number;
   totalSpent: number;
   blockedAttempts: number;
-  connectedAt: string;
-  description: string;
-  version: string;
+
   fleetId?: string | null;
   useFleetPolicy?: boolean;
 }
-
 export interface Approval {
   id: string;
   agentId: string;

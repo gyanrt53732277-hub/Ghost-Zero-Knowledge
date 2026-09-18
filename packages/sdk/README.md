@@ -58,35 +58,37 @@ await safeExecute({ command_name: 'purchase_item', arguments: { amount: 1500, me
 ## 🛡️ Direct SDK API Usage
 
 ```typescript
-import { GhostClient } from '@ghost/sdk';
+import { GhostClient } from "@ghost/sdk";
 
 const ghost = new GhostClient({
-  apiKey: 'gsk_live_9f82kd01a84f...',
-  network: 'preprod' // 'preprod' | 'preview' | 'mainnet'
+  apiKey: process.env.GHOST_API_KEY!,
+  network: "preprod",
 });
 
-// Evaluate spend in ~3ms
+// Check whether the proposed transaction satisfies the agent policy.
 const decision = await ghost.evaluate({
-  agentId: 'agent_shopping_01',
+  agentId: "agent_shopping_01",
   amount: 150,
-  merchant: 'AWS Cloud Services',
-  category: 'cloud_infrastructure'
+  merchant: "AWS Cloud Services",
+  category: "cloud_infrastructure",
 });
 
-if (decision.approved) {
-  console.log('✓ ZK Proof Witness Generated:', decision.proofHash);
-  
-  // Execute and submit proof to Midnight Network
-  const tx = await ghost.executeSpend({
-    agentId: 'agent_shopping_01',
-    amount: 150,
-    merchant: 'AWS Cloud Services'
-  });
-  console.log('✓ Settled on Midnight Explorer:', tx.txHash);
+if (!decision.approved) {
+  console.error("✗ Transaction blocked:", decision.reason);
 } else {
-  console.error('✗ Blocked by Policy:', decision.reason);
+  console.log("✓ Transaction approved");
+  console.log("✓ ZK proof:", decision.proofHash);
+
+  const transaction = await ghost.executeSpend({
+    agentId: "agent_shopping_01",
+    amount: 150,
+    merchant: "AWS Cloud Services",
+  });
+
+  console.log("✓ Transaction submitted:", transaction.txHash);
 }
 ```
+
 
 ---
 

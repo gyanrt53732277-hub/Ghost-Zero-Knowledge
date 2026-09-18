@@ -1,23 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Premium Dark Theme Palette - No color gradients */
+  /* Core dark interface colors */
   --bg-base: #050505;
-  --bg-surface: #0a0a0a;
-  --bg-surface-elevated: rgba(25, 25, 25, 0.6);
-  --bg-surface-hover: rgba(35, 35, 35, 0.8);
-  
+  --bg-surface: #0b0b0b;
+  --bg-surface-elevated: rgba(24, 24, 24, 0.62);
+  --bg-surface-hover: rgba(38, 38, 38, 0.82);
+
+  /* Typography */
   --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-tertiary: #666666;
-  
+  --text-secondary: #a1a1a1;
+  --text-tertiary: #686868;
+
+  /* Borders and focus states */
   --border-light: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(255, 255, 255, 0.25);
-  
+  --border-focus: rgba(255, 255, 255, 0.24);
+
+  /* Interface accents */
   --accent-white: #ffffff;
   --accent-black: #000000;
-  --accent-success: #34d399; /* Subtle green for success states */
-  --accent-error: #ef4444;   /* Subtle red for error states */
+  --accent-success: #32d399;
+  --accent-error: #ef4545;
+}
 
   /* Shadows & Blurs */
   --shadow-sm: 0 4px 12px rgba(0,0,0,0.2);

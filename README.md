@@ -252,7 +252,7 @@ Luma/
 ### Quick Start
 ```bash
 # 1. Clone the repository
-git clone https://github.com/gyanrt53732277-hub/Luma.git
+git clone https://github.com/gyanrt53732277-hub/Ghost-Zero-Knowledge.git
 cd Luma
 
 # 2. Install dependencies
